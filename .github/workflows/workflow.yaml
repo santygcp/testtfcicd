@@ -27,7 +27,7 @@ jobs:
       with:
         terraform_version: latest
     - name: Authenticate with GCP
-      run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      run: gcloud auth  santytest@global-mobility-services.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
     - name: Set the project
       run: gcloud config set project  global-mobility-services
     - name: Initialize Terraform
@@ -40,5 +40,5 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
     - name: Authenticate with GCP
-      run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      run: gcloud auth  santytest@global-mobility-services.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
      
