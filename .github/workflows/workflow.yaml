@@ -26,8 +26,11 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: latest
-    - name: Authenticate with GCP
-      run: gcloud auth  santytest@global-mobility-services.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
     - name: Set the project
       run: gcloud config set project  global-mobility-services
     - name: Initialize Terraform
@@ -39,6 +42,9 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-    - name: Authenticate with GCP
-      run: gcloud auth  santytest@global-mobility-services.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
      
