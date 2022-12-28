@@ -8,6 +8,6 @@ resource "google_storage_bucket" "gcs_bucket" {
   location = "europe-west2"
 }
 
-resource "google_storage_bucket" "gcs_bucket" {
+resource "google_storage_bucket" "gcs_bucket1" {
   name = "test-bucket-random-001123"
 }
