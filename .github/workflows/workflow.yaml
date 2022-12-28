@@ -42,8 +42,8 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
+    
+    - name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
