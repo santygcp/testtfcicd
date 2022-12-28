@@ -9,5 +9,5 @@ resource "google_storage_bucket" "gcs_bucket" {
 }
 
 resource "google_storage_bucket" "gcs_bucket1ef" {
-  name = "test-bucket-random-001123"
+  name = "test-bucket-random-00112"
 }
