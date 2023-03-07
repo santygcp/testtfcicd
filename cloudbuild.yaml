@@ -1,22 +1,24 @@
 steps:
 - name: "gcr.io/cloud-builders/openscap"
+  entrypoint: "/usr/bin/openscap"
   args: ["--verbose", "--report", "/workspace/report.html", "https://companies.jbcl.cloud"]
   volumes:
   - name: "vol"
     path: "/workspace"
 - name: "gcr.io/cloud-builders/docker"
+  entrypoint: "/usr/bin/docker"
   args: ["build", "-t", "openvas-scan", "openvas"]
   dir: "./nmap"
   volumes:
   - name: "vol"
     path: "/workspace"
 - name: "gcr.io/cloud-builders/docker"
+  entrypoint: "/usr/bin/docker"
   args: ["run", "-v", "vol:/workspace", "openvas-scan"]
-  options:
-    diskSizeGb: 10
-    diskType: "pd-ssd"
+  volumes:
+  - name: "vol"
+    path: "/workspace"
   timeout: "1200s"
 
 volumes:
   - name: "vol"
-    path: "/workspace"
