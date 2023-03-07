@@ -1,8 +1,19 @@
 steps:
-  # Install nmap
-  - name: 'ubuntu'
-    args: ['bash', '-c', 'apt-get update && apt-get install -y nmap']
+  # Build Docker container
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'nmap-scan', '-']
 
-  # Scan companies.jbcl.cloud using nmap
-  - name: 'gcr.io/cloud-builders/nmap'
-    args: ['companies.jbcl.cloud']
+    # Use a subshell to pass Dockerfile content as input to the build command
+    dir: 'nmap'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    id: 'Build nmap-scan Docker container'
+    waitFor: ['-']
+    timeout: '1200s'
+
+  # Run nmap scan using the Docker container
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['run', 'nmap-scan', 'companies.jbcl.cloud']
+
+    id: 'Run nmap scan'
+    waitFor: ['Build nmap-scan Docker container']
