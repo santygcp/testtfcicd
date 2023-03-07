@@ -4,29 +4,19 @@ steps:
   volumes:
   - name: "vol"
     path: "/workspace"
-  env:
-  - "HOME=/builder/home"
-  - "XDG_CACHE_HOME=/builder/home/.cache"
-  - "XDG_CONFIG_HOME=/builder/home/.config"
-  - "XDG_DATA_HOME=/builder/home/.local/share"
 - name: "gcr.io/cloud-builders/docker"
   args: ["build", "-t", "openvas-scan", "openvas"]
   dir: "./nmap"
-  env:
-  - "HOME=/builder/home"
-  - "XDG_CACHE_HOME=/builder/home/.cache"
-  - "XDG_CONFIG_HOME=/builder/home/.config"
-  - "XDG_DATA_HOME=/builder/home/.local/share"
+  volumes:
+  - name: "vol"
+    path: "/workspace"
 - name: "gcr.io/cloud-builders/docker"
   args: ["run", "-v", "vol:/workspace", "openvas-scan"]
-  env:
-  - "HOME=/builder/home"
-  - "XDG_CACHE_HOME=/builder/home/.cache"
-  - "XDG_CONFIG_HOME=/builder/home/.config"
-  - "XDG_DATA_HOME=/builder/home/.local/share"
+  options:
+    diskSizeGb: 10
+    diskType: "pd-ssd"
   timeout: "1200s"
 
-disk:
-  name: vol
-  sizeGb: 10
-  mountPoint: /workspace
+volumes:
+  - name: "vol"
+    path: "/workspace"
