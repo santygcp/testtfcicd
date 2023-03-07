@@ -7,16 +7,19 @@ steps:
 - name: "gcr.io/cloud-builders/docker"
   args: ["build", "-t", "openvas-scan", "openvas"]
   dir: "./nmap"
-  volumes:
-  - name: "vol"
-    path: "/workspace"
+  options:
+    volumes:
+    - name: "vol"
+      path: "/workspace"
 - name: "gcr.io/cloud-builders/docker"
   args: ["run", "-v", "vol:/workspace", "openvas-scan"]
-  volumes:
-  - name: "vol"
-    path: "/workspace"
+  options:
+    volumes:
+    - name: "vol"
+      path: "/workspace"
   timeout: "1200s"
 
-volumes:
+options:
+  volumes:
   - name: "vol"
-    path: "/workspace"
+   
