@@ -5,13 +5,25 @@ steps:
   args: ['build', '-t', 'nmap', '-f', 'nmap/Dockerfile', '.']
   dir: 'nmap'
 - name: gcr.io/cloud-builders/docker
-  args: ['run', '-v', '/workspace:/output', 'nmap', '-oX', '/output/results.xml', 'example.com']
+  args: ['run', '-v', '/workspace:/output', 'nmap', '-oX', '/output/nmap_results.xml', 'https://companies.jbcl.cloud/']
 - name: gcr.io/cloud-builders/scp
-  args: ['-r', '-P', '22', '/workspace/results.xml', 'user@host:/path/to/remote/file']
+  args: ['-r', '-P', '22', '/workspace/nmap_results.xml', 'user@host:/path/to/remote/file']
 - name: gcr.io/cloud-builders/git
   args: ['clone', 'https://github.com/greenbone/openvas.git']
 - name: gcr.io/cloud-builders/docker
   args: ['build', '-t', 'openvas', '-f', 'openvas/Dockerfile', '.']
   dir: 'openvas'
 - name: gcr.io/cloud-builders/docker
-  args: ['run', '-v', '/workspace:/output', 'openvas', '-oX', '/output/results.xml', 'example.com']
+  args: ['run', '-v', '/workspace:/output', 'openvas', '-oX', '/output/openvas_results.xml', 'https://companies.jbcl.cloud/']
+- name: gcr.io/cloud-builders/scp
+  args: ['-r', '-P', '22', '/workspace/openvas_results.xml', 'user@host:/path/to/remote/file']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', '/workspace/nmap_results.xml', 'gs://dumduma/nmap_results.xml']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', '/workspace/openvas_results.xml', 'gs://dumduma/openvas_results.xml']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['compose', 'gs://dumduma/nmap_results.xml', 'gs://dumduma/openvas_results.xml', 'gs://dumduma/results.xml']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', 'gs://dumduma/results.xml', '/workspace/results.xml']
+- name: gcr.io/cloud-builders/scp
+  args: ['-r', '-P', '22', '/workspace/results.xml', 'user@host:/path/to/remote/file']
