@@ -2,7 +2,7 @@ steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', 'https://github.com/nmap/nmap.git']
 - name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'nmap', './nmap']
+  args: ['build', '-t', 'nmap', '-f', 'nmap/Dockerfile', '.']
 - name: gcr.io/cloud-builders/docker
   args: ['run', '-v', '/workspace:/output', 'nmap', '-oX', '/output/results.xml', 'example.com']
 - name: gcr.io/cloud-builders/scp
@@ -10,6 +10,6 @@ steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', 'https://github.com/greenbone/openvas.git']
 - name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'openvas', './openvas']
+  args: ['build', '-t', 'openvas', '-f', 'openvas/Dockerfile', '.']
 - name: gcr.io/cloud-builders/docker
   args: ['run', '-v', '/workspace:/output', 'openvas', '-oX', '/output/results.xml', 'example.com']
