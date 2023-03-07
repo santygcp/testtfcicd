@@ -19,4 +19,4 @@ steps:
 
 volumes:
   - name: "vol"
-    ```
+    path: "/workspace"
