@@ -12,8 +12,3 @@ steps:
   args: ["run", "-v", "/workspace:/workspace", "openvas-scan"]
   timeout: "1200s"
 
-options:
-  machineType: 'e2-medium'
-  diskSizeGb: 10
-
-timeout: "1800s"
