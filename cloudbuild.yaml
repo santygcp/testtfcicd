@@ -1,19 +1,22 @@
 steps:
-  # Build Docker container
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'nmap-scan', '-']
+- name: "gcr.io/cloud-builders/openscap"
+  args: ["--verbose", "--report", "/workspace/report.html", "https://companies.jbcl.cloud"]
+  volumes:
+  - name: "vol"
+    path: "/workspace"
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "openvas-scan", "openvas"]
+  dir: "./nmap"
+  volumes:
+  - name: "vol"
+    path: "/workspace"
+- name: "gcr.io/cloud-builders/docker"
+  args: ["run", "-v", "vol:/workspace", "openvas-scan"]
+  volumes:
+  - name: "vol"
+    path: "/workspace"
+  timeout: "1200s"
 
-    # Use a subshell to pass Dockerfile content as input to the build command
-    dir: 'nmap'
-    env:
-      - 'DOCKER_BUILDKIT=1'
-    id: 'Build nmap-scan Docker container'
-    waitFor: ['-']
-    timeout: '1200s'
-
-  # Run nmap scan using the Docker container
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['run', 'nmap-scan', 'companies.jbcl.cloud']
-
-    id: 'Run nmap scan'
-    waitFor: ['Build nmap-scan Docker container']
+volumes:
+  - name: "vol"
+    ```
