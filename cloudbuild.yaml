@@ -1,14 +1,15 @@
 steps:
-- name: "gcr.io/cloud-builders/apt"
-  args: ["update"]
-- name: "gcr.io/cloud-builders/apt"
-  args: ["install", "-y", "nmap"]
-- name: "gcr.io/cloud-builders/openscap"
-  args: ["--verbose", "--report", "/workspace/report.html", "https://companies.jbcl.cloud"]
-- name: "gcr.io/cloud-builders/docker"
-  args: ["build", "-t", "openvas-scan", "./openvas"]
-  dir: "/workspace"
-- name: "gcr.io/cloud-builders/docker"
-  args: ["run", "-v", "/workspace:/workspace", "openvas-scan"]
-  timeout: "1200s"
-
+- name: gcr.io/cloud-builders/git
+  args: ['clone', 'https://github.com/nmap/nmap.git']
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'nmap', './nmap']
+- name: gcr.io/cloud-builders/docker
+  args: ['run', '-v', '$PWD:/output', 'nmap', '-oX', '/output/results.xml', 'https://companies.jbcl.cloud/']
+- name: gcr.io/cloud-builders/scp
+  args: ['-r', '-P', '22', '/path/to/local/file', 'user@host:/path/to/remote/file']
+- name: gcr.io/cloud-builders/git
+  args: ['clone', 'https://github.com/greenbone/openvas.git']
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'openvas', './openvas']
+- name: gcr.io/cloud-builders/docker
+  args: ['run', '-v', '$PWD:/output', 'openvas', '-oX', '/output/results.xml', 'https://companies.jbcl.cloud/']
