@@ -1,24 +1,16 @@
 steps:
 - name: "gcr.io/cloud-builders/openscap"
-  entrypoint: "/usr/bin/openscap"
   args: ["--verbose", "--report", "/workspace/report.html", "https://companies.jbcl.cloud"]
-  volumes:
-  - name: "vol"
-    path: "/workspace"
+  dir: "./openscap"
 - name: "gcr.io/cloud-builders/docker"
-  entrypoint: "/usr/bin/docker"
   args: ["build", "-t", "openvas-scan", "openvas"]
-  dir: "./nmap"
-  volumes:
-  - name: "vol"
-    path: "/workspace"
+  dir: "./openvas"
 - name: "gcr.io/cloud-builders/docker"
-  entrypoint: "/usr/bin/docker"
-  args: ["run", "-v", "vol:/workspace", "openvas-scan"]
-  volumes:
-  - name: "vol"
-    path: "/workspace"
-  timeout: "1200s"
-
-volumes:
-  - name: "vol"
+  args: ["run", "-v", "$(pwd)/workspace:/workspace", "openvas-scan"]
+  dir: "./openvas"
+- name: "gcr.io/cloud-builders/gcloud"
+  entrypoint: "bash"
+  args:
+    - "-c"
+    - "gsutil cp workspace/report.html $(pwd)/report.html"
+timeout: "1200s"
