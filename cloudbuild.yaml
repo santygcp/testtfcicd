@@ -1,7 +1,19 @@
 steps:
+- name: "gcr.io/cloud-builders/apt"
+  args: ["update"]
+- name: "gcr.io/cloud-builders/apt"
+  args: ["install", "-y", "nmap"]
+- name: "gcr.io/cloud-builders/openscap"
+  args: ["--verbose", "--report", "/workspace/report.html", "https://companies.jbcl.cloud"]
 - name: "gcr.io/cloud-builders/docker"
-  args: ["build", "-t", "openvas-scan", "-f", "Dockerfile", "."]
-  dir: "openvas"
+  args: ["build", "-t", "openvas-scan", "./openvas"]
+  dir: "/workspace"
 - name: "gcr.io/cloud-builders/docker"
-  args: ["run", "-v", "$(pwd)/results:/results", "openvas-scan", "companies.jbcl.cloud"]
+  args: ["run", "-v", "/workspace:/workspace", "openvas-scan"]
   timeout: "1200s"
+
+options:
+  machineType: 'e2-medium'
+  diskSizeGb: 10
+
+timeout: "1800s"
