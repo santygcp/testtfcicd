@@ -1,4 +1,4 @@
-steps: 
+steps:
   # Install OpenVAS in GCP DevSecOps Pipeline 
   - name: 'ubuntu'
     entrypoint: bash
@@ -10,6 +10,8 @@ steps:
         add-apt-repository ppa:mrazavi/gvm
         apt-get update
         apt-get -y install gvm
+        echo "tzdata tzdata/Areas select Europe" | sudo debconf-set-selections
+        echo "tzdata tzdata/Zones/Europe select Berlin" | sudo debconf-set-selections
         gvm-setup
     id: Install OpenVAS
     
