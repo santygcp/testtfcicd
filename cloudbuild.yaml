@@ -1,6 +1,6 @@
 steps:
   # Install OpenVAS
-  - name: Install OpenVAS
+  - name: install_openvas
     entrypoint: bash
     args:
       - '-c'
