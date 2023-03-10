@@ -10,8 +10,7 @@ steps:
         add-apt-repository ppa:mrazavi/gvm
         apt-get update
         apt-get -y install gvm
-        echo "tzdata tzdata/Areas select Europe" | sudo debconf-set-selections
-        echo "tzdata tzdata/Zones/Europe select Berlin" | sudo debconf-set-selections
+        echo "8" | gvm-manage-certs -af
         gvm-setup
     id: Install OpenVAS
     
