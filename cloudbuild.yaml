@@ -1,7 +1,22 @@
 steps:
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/IFGHou/Wapiti.git', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'wapiti', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['run', 'wapiti', '-u', 'https://example.com', '-o', 'report.html']
+  # Step 1: Clone repository
+  - name: gcr.io/cloud-builders/git
+    args:
+      - clone
+      - https://github.com/your-web-app.git
+      - app
+
+  # Step 2: Install dependencies and run Wapiti scan
+  - name: docker.io/wapiti/wapiti
+    args:
+      - -u
+      - https://example.com
+    dir: app
+
+  # Step 3: Copy Wapiti report to Cloud Storage bucket
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - 'cp'
+      - '-r'
+      - 'app/wapiti_report'
+      - 'gs://your-bucket-name/wapiti_report'
