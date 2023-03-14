@@ -4,4 +4,4 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'arachni', '/workspace/arachni/docker']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '$WORKSPACE:/home/arachni/arachni', '-w', '/home/arachni/arachni', 'arachni', './bin/arachni <your_website_url>']
+  args: ['run', '-v', '${PROJECT_DIR}:/home/arachni/arachni', '-w', '/home/arachni/arachni', 'arachni', './bin/arachni <your_website_url>']
