@@ -1,9 +1,10 @@
 steps:
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/IFGHou/wapiti.git', 'wapiti']
-
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'wapiti', './wapiti']
-
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '$$PWD:/report', 'wapiti', '-u', 'https://YOUR_WEBSITE_URL', '-f', 'html', '-o', '/report/wapiti-report.html']
+- name: arachni
+  id: run-arachni
+  entrypoint: /bin/sh
+  args:
+  - -c
+  - |
+    apt-get update
+    apt-get install -y arachni
+    arachni <your_website_url>
