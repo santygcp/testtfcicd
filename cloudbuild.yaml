@@ -1,5 +1,7 @@
 steps:
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/IFGHou/Wapiti.git', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['pull', 'sullo/nikto']
-- name: 'sullo/nikto'
-  args: ['-h', 'example.com']
+  args: ['build', '-t', 'wapiti', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', 'wapiti', '-u', 'https://example.com', '-o', 'report.html']
