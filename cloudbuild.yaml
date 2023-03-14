@@ -1,17 +1,17 @@
-# steps:
-#   # Clone the repository
-#   - name: 'gcr.io/cloud-builders/git'
-#     args: ['clone', 'https://github.com/example/repository.git', '.']
+steps:
+  # Clone the repository
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/example/repository.git', '.']
     
-#   # Install Vega dependencies
-#   - name: 'node'
-#     entrypoint: 'npm'
-#     args: ['install', 'vega']
+  # Install Vega dependencies
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['install', 'vega']
 
-#   # Run Vega scan
-#   - name: 'node'
-#     entrypoint: 'npx'
-#     args: ['@vega/scanner']
+  # Run Vega scan
+  - name: 'node'
+    entrypoint: 'npx'
+    args: ['@vega/scanner']
 
 #   # Upload Vega report as an artifact
 #   - name: 'gcr.io/cloud-builders/gsutil'
@@ -24,10 +24,10 @@
 #     location: '$MY_BUCKET'
 #     paths: ['$REPORT']
 
-steps:
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - 'rm -rf *'
+# steps:
+# - name: 'gcr.io/cloud-builders/gcloud'
+#   entrypoint: 'bash'
+#   args:
+#   - '-c'
+#   - 'rm -rf *'
 
