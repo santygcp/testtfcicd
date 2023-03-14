@@ -1,7 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/git'
-  args: ['clone', '--depth=1', 'https://github.com/Arachni/arachni.git', '/workspace/arachni']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'arachni', '/workspace/arachni/docker']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '${PROJECT_DIR}:/home/arachni/arachni', '-w', '/home/arachni/arachni', 'arachni', './bin/arachni <your_website_url>']
+  args: ['clone', 'https://github.com/your-web-app.git', 'app']
+- name: 'gcr.io/cloud-builders/nikto'
+  args: ['-h', 'your-web-app.com']
