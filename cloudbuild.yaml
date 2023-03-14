@@ -1,5 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/your-web-app.git', 'app']
+  args: ['clone', 'https://github.com/sullo/nikto.git']
 - name: 'gcr.io/cloud-builders/nikto'
-  args: ['-h', 'your-web-app.com']
+  args: ['-h', 'example.com']
