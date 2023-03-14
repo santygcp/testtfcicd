@@ -1,17 +1,17 @@
 steps:
-  - name: 'docker.io/library/node:16'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        npm install -g vega-cli
-        npm install -g vega-lite
-        vega-lite your-chart.vl.json | vl2svg -o your-chart.svg
-    volumes:
-      - name: 'source'
-        path: '/workspace'
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'your-chart.svg', 'gs://your-bucket/your-chart.svg']
-    volumes:
-      - name: 'source'
-        path: '/workspace'
+- name: "docker.io/schmunk42/vega-ci"
+  args: ["--target", "https://example.com", "--dir", "/tmp", "--report", "/report/report.html"]
+  volumes:
+  - name: "report"
+    path: "/report"
+  timeout: "300s"
+
+volumes:
+- name: "report"
+  path: "/report"
+
+options:
+  volumes:
+    - name: "report"
+      path: "gs://my-bucket/reports"
+
