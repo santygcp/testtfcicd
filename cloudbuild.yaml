@@ -1,33 +1,16 @@
 steps:
-  # Clone the repository
+  # Step 1: Checkout the source code
   - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/example/repository.git', '.']
-    
-  # Install Vega dependencies
-  - name: 'node'
-    entrypoint: 'npm'
-    args: ['install', 'vega']
+    args: ['clone', 'https://github.com/subgraph/Vega.git']
 
-  # Run Vega scan
-  - name: 'node'
-    entrypoint: 'npx'
-    args: ['@vega/scanner']
+  # Step 2: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/mystic-pagoda-369007/vega-docker', '-f', 'Dockerfile', '.']
 
-#   # Upload Vega report as an artifact
-#   - name: 'gcr.io/cloud-builders/gsutil'
-#     args: ['cp', 'vega-report.html', 'gs://dumduma/vega-report.html']
-#     env:
-#       - 'MY_BUCKET=gs://dumduma'
-#       - 'REPORT=vega-report.html'
-# artifacts:
-#   objects:
-#     location: '$MY_BUCKET'
-#     paths: ['$REPORT']
+  # Step 3: Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/mystic-pagoda-369007/vega-docker']
 
-# steps:
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   entrypoint: 'bash'
-#   args:
-#   - '-c'
-#   - 'rm -rf *'
-
+  # Step 4: Run Vega against the target website
+  - name: 'gcr.io/mystic-pagoda-369007/vega-docker'
+    args: ['--scan', 'http://example.com']
