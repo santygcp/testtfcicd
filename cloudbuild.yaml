@@ -13,13 +13,13 @@ steps:
     entrypoint: 'npx'
     args: ['@vega/scanner']
 
-  # Upload Vega report as an artifact
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'vega-report.html', 'gs://dumduma/vega-report.html']
-    env:
-      - 'MY_BUCKET=gs://dumduma'
-      - 'REPORT=vega-report.html'
-artifacts:
-  objects:
-    location: '$MY_BUCKET'
-    paths: ['$REPORT']
+#   # Upload Vega report as an artifact
+#   - name: 'gcr.io/cloud-builders/gsutil'
+#     args: ['cp', 'vega-report.html', 'gs://dumduma/vega-report.html']
+#     env:
+#       - 'MY_BUCKET=gs://dumduma'
+#       - 'REPORT=vega-report.html'
+# artifacts:
+#   objects:
+#     location: '$MY_BUCKET'
+#     paths: ['$REPORT']
