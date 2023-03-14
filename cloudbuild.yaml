@@ -1,10 +1,7 @@
 steps:
-- name: arachni
-  id: run-arachni
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - |
-    apt-get update
-    apt-get install -y arachni
-    arachni <your_website_url>
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', '--depth=1', 'https://github.com/Arachni/arachni.git', '/workspace/arachni']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'arachni', '/workspace/arachni/docker']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', '-v', '$WORKSPACE:/home/arachni/arachni', '-w', '/home/arachni/arachni', 'arachni', './bin/arachni <your_website_url>']
