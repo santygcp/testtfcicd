@@ -15,9 +15,9 @@ steps:
 
   # Upload Vega report as an artifact
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'vega-report.html', 'gs://my-bucket/vega-report.html']
+    args: ['cp', 'vega-report.html', 'gs://dumduma/vega-report.html']
     env:
-      - 'MY_BUCKET=gs://my-bucket'
+      - 'MY_BUCKET=gs://dumduma'
       - 'REPORT=vega-report.html'
 artifacts:
   objects:
