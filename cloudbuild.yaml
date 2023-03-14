@@ -7,5 +7,5 @@ steps:
   dir: '/workspace/nikto/program'
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '${PWD}:/nikto', 'nikto', '-h', 'https://app.jbcl.cloud/', '-output', '/nikto/report.html']
+  args: ['run', '-v', '.', 'nikto', '-h', 'https://app.jbcl.cloud/', '-output', '/workspace/nikto/report.html']
   dir: '/workspace/nikto/program'
