@@ -1,11 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/sullo/nikto.git', '/workspace/nikto']
+  args: ['clone', 'https://github.com/IFGHou/wapiti.git', '/workspace/wapiti']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'nikto', '.']
-  dir: '/workspace/nikto/program'
+  args: ['build', '-t', 'wapiti', '/workspace/wapiti']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '.', 'nikto', '-h', 'https://app.jbcl.cloud/', '-output', '/workspace/nikto/report.html']
-  dir: '/workspace/nikto/program'
+  args: ['run', '-v', '${PWD}:/report', 'wapiti', '-u', 'https://YOUR_WEBSITE_URL', '-f', 'html', '-o', '/report/wapiti-report.html']
