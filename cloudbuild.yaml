@@ -1,17 +1,13 @@
 steps:
-- name: "docker.io/schmunk42/vega-ci"
-  args: ["--target", "https://example.com", "--dir", "/tmp", "--report", "/report/report.html"]
-  volumes:
-  - name: "report"
-    path: "/report"
-  timeout: "300s"
-
-volumes:
-- name: "report"
-  path: "/report"
-
-options:
-  volumes:
-    - name: "report"
-      path: "gs://my-bucket/reports"
-
+  - name: "docker.io/snyk/snyk-cli:latest"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        snyk test --docker mystic-pagoda-369007/vega-lite:v1 --file=Dockerfile --severity-threshold=high --json-file-output=result.json
+  - name: "gcr.io/cloud-builders/gsutil"
+    args:
+      - "cp"
+      - "result.json"
+      - "gs://your-bucket/result.json"
+˘
