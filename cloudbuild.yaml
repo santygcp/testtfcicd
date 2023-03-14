@@ -1,9 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/IFGHou/wapiti.git', '/workspace/wapiti']
+  args: ['clone', 'https://github.com/IFGHou/wapiti.git', 'wapiti']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'wapiti', '/workspace/wapiti']
+  args: ['build', '-t', 'wapiti', './wapiti']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-v', '${PWD}:/report', 'wapiti', '-u', 'https://YOUR_WEBSITE_URL', '-f', 'html', '-o', '/report/wapiti-report.html']
+  args: ['run', '-v', '$$PWD:/report', 'wapiti', '-u', 'https://YOUR_WEBSITE_URL', '-f', 'html', '-o', '/report/wapiti-report.html']
