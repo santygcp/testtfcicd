@@ -1,39 +1,25 @@
 steps:
-  # Checkout the source code
+  # Clone the repository
   - name: 'gcr.io/cloud-builders/git'
-    id: Checkout
-    args:
-      - 'clone'
-      - '--'
-      - 'https://github.com/your-web-app.git'
-      - '.'
-  # Install dependencies
-  - name: 'gcr.io/cloud-builders/npm'
-    id: Install dependencies
-    args: ['install']
-  # Run Vega DAST scan
-  - name: 'owasp/dependency-check'
-    id: Vega DAST scan
-    entrypoint: 'dependency-check'
-    args:
-      - '-P'
-      - '-f'
-      - 'HTML'
-      - '-s'
-      - '.'
-  # Upload Vega DAST scan report to GCS
-  - name: 'gcr.io/cloud-builders/gsutil'
-    id: Upload Vega DAST scan report
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        FILE=$(find . -name 'dependency-check-report.html')
-        if [ -f "$FILE" ]; then
-          gsutil cp "$FILE" gs://your-bucket-name/vega-report/$(date +%Y-%m-%d-%H-%M-%S)-vega-report.html
-        else
-          echo "No Vega DAST scan report found."
-        fi
-images:
-  - gcr.io/your-project-id/your-web-app
+    args: ['clone', 'https://github.com/example/repository.git', '.']
+    
+  # Install Vega dependencies
+  - name: 'node'
+    entrypoint: 'npm'
+    args: ['install', 'vega']
 
+  # Run Vega scan
+  - name: 'node'
+    entrypoint: 'npx'
+    args: ['@vega/scanner']
+
+  # Upload Vega report as an artifact
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'vega-report.html', 'gs://my-bucket/vega-report.html']
+    env:
+      - 'MY_BUCKET=gs://my-bucket'
+      - 'REPORT=vega-report.html'
+artifacts:
+  objects:
+    location: '$MY_BUCKET'
+    paths: ['$REPORT']
