@@ -1,13 +1,39 @@
 steps:
-  - name: "docker.io/snyk/snyk-cli:latest"
-    entrypoint: "sh"
+  # Checkout the source code
+  - name: 'gcr.io/cloud-builders/git'
+    id: Checkout
     args:
-      - "-c"
+      - 'clone'
+      - '--'
+      - 'https://github.com/your-web-app.git'
+      - '.'
+  # Install dependencies
+  - name: 'gcr.io/cloud-builders/npm'
+    id: Install dependencies
+    args: ['install']
+  # Run Vega DAST scan
+  - name: 'owasp/dependency-check'
+    id: Vega DAST scan
+    entrypoint: 'dependency-check'
+    args:
+      - '-P'
+      - '-f'
+      - 'HTML'
+      - '-s'
+      - '.'
+  # Upload Vega DAST scan report to GCS
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: Upload Vega DAST scan report
+    entrypoint: 'bash'
+    args:
+      - '-c'
       - |
-        snyk test --docker mystic-pagoda-369007/vega-lite:v1 --file=Dockerfile --severity-threshold=high --json-file-output=result.json
-  - name: "gcr.io/cloud-builders/gsutil"
-    args:
-      - "cp"
-      - "result.json"
-      - "gs://your-bucket/result.json"
-˘
+        FILE=$(find . -name 'dependency-check-report.html')
+        if [ -f "$FILE" ]; then
+          gsutil cp "$FILE" gs://your-bucket-name/vega-report/$(date +%Y-%m-%d-%H-%M-%S)-vega-report.html
+        else
+          echo "No Vega DAST scan report found."
+        fi
+images:
+  - gcr.io/your-project-id/your-web-app
+
