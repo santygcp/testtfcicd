@@ -7,4 +7,4 @@ steps:
   - -r
   - 'zap_report.html'
   - -m
-  - 5
+  - '5'
