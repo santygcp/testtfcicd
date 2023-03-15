@@ -4,3 +4,7 @@ steps:
   args:
   - -t
   - 'https://companies.jbcl.cloud'
+  - -r
+  - 'zap_report.html'
+  - -m
+  - '5'
