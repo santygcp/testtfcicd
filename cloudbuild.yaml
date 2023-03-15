@@ -1,9 +1,10 @@
-steps:
-- name: gcr.io/global-mobility-services/testingsanty/my-zap-image
-  entrypoint: bash
-  args:
-  - -c
-  - |
+steps:   
+#Run DAST scan using OWASP ZAP in GCP DevSecOps Pipeline
+  - name: 'ubuntu'
+    entrypoint: bash
+    args: 
+      - '-c'
+      - |-
     apt-get update
         apt-get -y install wget
         apt-get -y install default-jdk
