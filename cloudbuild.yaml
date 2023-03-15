@@ -18,3 +18,4 @@ artifacts:
     location: 'gs://dumduma'
     paths:
       - zap_report.html
+      
