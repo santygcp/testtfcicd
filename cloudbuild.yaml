@@ -2,8 +2,6 @@ steps:
   - name: DAST Scan using OWASP ZAP
     id: DAST Scan using OWASP ZAP
     dir: /workspace
-    docker:
-      image: gcr.io/global-mobility-services/jb-ops/jb4c-pentest:latest
     entrypoint: bash
     args:
       - -c
