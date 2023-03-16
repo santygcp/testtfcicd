@@ -1,9 +1,23 @@
 steps:
-  - name: 'owasp/zap2docker-stable'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - 'zap-full-scan.py -t https://www.example.com'
+  # Build the Docker image.
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'mystic-pagoda-369007/madmax/pentest-latest', 'jb-ops/Dockerfile.pentest']
 
-images:
-  - 'owasp/zap2docker-stable'
+  # Push the image to GCR.IO.
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'mystic-pagoda-369007/madmax/pentest-latest']
+
+  - name: gcr.io/mystic-pagoda-369007/madmax/pentest-latest
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cd /app/ZAP_2.12.0/
+        ./zap.sh -cmd -quickurl https://app.jbcl.cloud -quickprogress -quickout ../zap_report.html
+    id: DAST Scan using OWASP ZAP
+
+artifacts:
+  objects:
+    location: 'gs://dumduma'
+    paths:
+      - zap_report.html
