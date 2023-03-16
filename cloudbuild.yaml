@@ -1,5 +1,5 @@
 steps:
-  - name: DAST Scan using OWASP ZAP
+  - name: dast-scan
     id: DAST Scan using OWASP ZAP
     dir: /workspace
     entrypoint: bash
@@ -8,7 +8,7 @@ steps:
       - |
         cd /app/ZAP_2.12.0/
         ./zap.sh -cmd -quickurl https://app.jbcl.cloud -quickprogress -quickout ../zap_report.html
-  - name: Copy report to bucket
+  - name: copy-report
     id: Copy report to bucket
     entrypoint: bash
     args:
