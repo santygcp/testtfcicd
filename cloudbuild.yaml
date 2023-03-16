@@ -1,21 +1,19 @@
-steps:   
-#Run DAST scan using OWASP ZAP in GCP DevSecOps Pipeline
-  - name: 'ubuntu'
-    entrypoint: bash
-    args: 
-      - '-c'
-      - |-
-        apt-get update
-        apt-get -y install wget
-        apt-get -y install default-jdk
-        wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.1/ZAP_2.11.1_Linux.tar.gz
-        mkdir zap
-        tar -xvf ZAP_2.11.1_Linux.tar.gz
-        cd ZAP_2.11.1
-        ./zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ../zap_report.html 
+steps:
+  - name: DAST Scan using OWASP ZAP
     id: DAST Scan using OWASP ZAP
-artifacts:
-  objects:
-    location: 'gs://dumduma'
-    paths:
-      - zap_report.html
+    dir: /workspace
+    docker:
+      image: gcr.io/global-mobility-services/jb-ops/jb4c-pentest:latest
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cd /app/ZAP_2.12.0/
+        ./zap.sh -cmd -quickurl https://app.jbcl.cloud -quickprogress -quickout ../zap_report.html
+  - name: Copy report to bucket
+    id: Copy report to bucket
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gsutil cp /workspace/zap_report.html gs://pentest-result/
