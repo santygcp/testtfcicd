@@ -2,14 +2,13 @@ steps:
   - name: DAST Scan using OWASP ZAP
     id: DAST Scan using OWASP ZAP
     dir: /workspace
-    docker:
-      image: gcr.io/global-mobility-services/jb-ops/jb4c-pentest:latest
     entrypoint: bash
     args:
       - -c
       - |
         cd /app/ZAP_2.12.0/
         ./zap.sh -cmd -quickurl https://ww.example.com -quickprogress -quickout ../zap_report.html
+    image: gcr.io/global-mobility-services/jb-ops/jb4c-pentest:latest
   - name: copy-report
     id: Copy report to bucket
     entrypoint: bash
