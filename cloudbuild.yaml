@@ -1,7 +1,7 @@
 steps:
   # Build the Docker image.
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'mystic-pagoda-369007/madmax/pentest-latest', '/jb-ops/.']
+    args: ['build', '-t', 'mystic-pagoda-369007/madmax/pentest-latest', 'jb-ops/.']
 
   # Push the image to GCR.IO.
   - name: 'gcr.io/cloud-builders/docker'
