@@ -13,19 +13,21 @@
 #     -t https://www.example.com -g gen.conf -r testreport.html
 
 
-
 steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/zap-proxy:latest', '.']
+  id: 'build_zap_proxy_docker_image'
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '--name', 'zap-proxy-container', '-d', '-p', '8090:8090', 'gcr.io/mystic-pagoda-369007/my-zap-image:latest']
+  args: ['run', '--name', 'zap-proxy-container', '-d', '-p', '8090:8090', 'gcr.io/mystic-pagoda-369007/my-zap-image:latestt']
   id: 'start_zap_proxy_container'
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '-t', '-v', '$PWD/output:/zap/wrk', '--network=host', 'owasp/zap2docker-stable', 'zap-full-scan.py', '-t', 'https://www.example.com', '-r', 'full-scan-report.html']
+  args: ['run', '-t', '-v', '.$:/zap/wrk', '--network=host', 'owasp/zap2docker-stable', 'zap-full-scan.py', '-t', 'https://www.example.com', '-r', 'full-scan-report.html']
   id: 'run_zap_proxy_scan'
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['cp', 'zap-proxy-container:/zap/wrk/full-scan-report.html', '$PWD/output']
+  args: ['cp', 'zap-proxy-container:/zap/wrk/full-scan-report.html', '.$/output']
   id: 'copy_scan_results'
 
 - name: 'gcr.io/cloud-builders/docker'
@@ -33,7 +35,7 @@ steps:
   id: 'stop_zap_proxy_container'
 
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '$PWD/output/full-scan-report.html', 'gs://dumduma/full-scan-report.html']
+  args: ['cp', '.$/output/full-scan-report.html', 'gs://dumduma/full-scan-report.html']
   id: 'upload_scan_results_to_gcs'
 
 
