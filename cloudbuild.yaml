@@ -1,14 +1,26 @@
-steps:
-- name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
-  id: 'ZAP Scan'
-  args:
-  - '-J'
-  - '--output-format'
-  - 'json'
-  - '-t'
-  - 'https://www.zaproxy.org/'
-  - '-r'
-  - '.zap/rules.tsv'
-  - '-c'
-  - '-a'
-timeout: 1200s
+# steps:
+# - name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
+#   id: 'ZAP Scan'
+#   args:
+#   - '-J'
+#   - '--output-format'
+#   - 'json'
+#   - '-t'
+#   - 'https://www.zaproxy.org/'
+#   - '-r'
+#   - '.zap/rules.tsv'
+#   - '-c'
+#   - '-a'
+# timeout: 1200s
+
+Steps:
+- name: "gcr.io/mystic-pagoda-369007/my-zap-image:latest"
+  entrypoint: "zap-baseline.py"
+  args: [
+    "-t", "http://example.com",
+    "-r", "report.html",
+    "-x", "report.xml"
+  ]
+- name: "gcr.io/cloud-builders/gsutil"
+  args: ["cp", "report.html", "gs://my-bucket/reports/report-$(date +%Y%m%d-%H%M%S).html"]
+  env:
