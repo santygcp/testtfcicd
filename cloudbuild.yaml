@@ -1,25 +1,14 @@
-# steps:
-# - name: "gcr.io/cloud-builders/wget"
-#   args: ["https://github.com/zaproxy/zaproxy/releases/download/v2.10.0/ZAP_2.10.0_Core.zip"]
-# - name: "gcr.io/cloud-builders/unzip"
-#   args: ["ZAP_2.10.0_Core.zip", "-d", "/zap"]
-# - name: "gcr.io/cloud-builders/docker"
-#   args: ["build", "-t", "my-zap-image", "."]
-# - name: "my-zap-image"
-#   entrypoint: "/zap/zap.sh"
-#   args: [
-#     "-cmd", "-quickurl", "https://www.example.com",
-#     "-quickprogress", "-quickout", "/workspace/zap_report.html"
-#   ]
-# - name: "gcr.io/cloud-builders/gsutil"
-#   args: ["cp", "/workspace/zap_report.html", "gs://my-bucket/zap_reports/$(date +%Y%m%d-%H%M%S).html"]
-
-
-
-
 steps:
-- name: "gcr.io/cloud-builders/docker"
-  args: ["run", "--rm", "-v", "$PWD:/zap/wrk", "owasp/zap2docker-stable", "zap-baseline.py", "-t", "https://example.com", "-r", "/zap/wrk/report.html"]
-- name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "report.html", "gs://my-bucket/zap/reports/$(date +%Y%m%d-%H%M%S).html"]
-
+- name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
+  id: 'ZAP Scan'
+  args:
+  - '-t'
+  - 'https://www.zaproxy.org/'
+  - '-r'
+  - '.zap/rules.tsv'
+  - '-c'
+  - '-a'
+  - '-J'
+  - '--output-format'
+  - 'json'
+timeout: 1200s
