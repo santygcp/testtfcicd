@@ -22,5 +22,8 @@ steps:
     # Run the ZAP Full Scan on example.com and generate a report
     docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -r report.html -o /zap/wrk/
 
-    # Copy the report to a Cloud Storage bucket
-    gsutil cp /zap/wrk/report.html gs://dumduma/
+artifacts:
+  objects:
+    location: 'gs://dumduma'
+    paths:
+      - /zap/wrk/report.html
