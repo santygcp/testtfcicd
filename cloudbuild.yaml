@@ -20,13 +20,17 @@ steps:
   - '-c'
   - |
     # Run the ZAP Full Scan on example.com and generate a report
-    docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -J report.json -w /zap/wrk/
+    docker run -t -v "/path/to/zap-report:/zap/wrk" owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -J report.json -w /zap/wrk/
 
     # Convert the JSON report to HTML
-    docker run -v "$(pwd)":/zap/wrk/:rw --rm owasp/zap2docker-stable zap-cli report -f html -o report.html -i /zap/wrk/report.json
+    docker run -v "/path/to/zap-report:/zap/wrk" --rm owasp/zap2docker-stable zap-cli report -f html -o report.html -i /zap/wrk/report.json
 
-artifacts:
+- name: 'gcr.io/cloud-builders/gsutil'
+  args:
+  - 'cp'
+  - '/path/to/zap-report/report.html'
+  - 'gs://dumduma/report.html'
+  artifacts:
   objects:
-    location: 'gs://dumduma'
-    paths:
-      - /zap/wrk/report.html
+    location: 'gs://dumduma/report.json'
+    paths: ['zap-report/report.json']
