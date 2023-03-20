@@ -1,36 +1,15 @@
-# steps:
-# - name: 'docker.io/library/docker:latest'
-#   entrypoint: 'sh'
-#   args:
-#   - '-c'
-#   - |
-#     # Install Docker Compose
-#     # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#     # chmod +x /usr/local/bin/docker-compose
-
-#     # Run the ZAP Full Scan on example.com
-#     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py \
-#     -t https://www.example.com -g gen.conf -r testreport.html
-
-
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
+- name: 'docker.io/library/docker:latest'
+  entrypoint: 'sh'
   args:
   - '-c'
   - |
-    # Run the ZAP Full Scan on example.com
-    docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -r /zap/wrk/report.html
-    
-    # Install gsutil tool to interact with Google Cloud Storage
-    apt-get update && apt-get -y install curl gnupg
-    curl https://sdk.cloud.google.com | bash
-    /root/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=/workspace/key.json
-    /root/google-cloud-sdk/bin/gcloud components install gsutil
-    
-    # Copy the report to a Google Cloud Storage bucket
-    /root/google-cloud-sdk/bin/gsutil cp /zap/wrk/report.html gs://$_BUCKET_NAME/reports/
+    # Install Docker Compose
+    # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    # chmod +x /usr/local/bin/docker-compose
 
-substitutions:
-  _BUCKET_NAME: dumduma
+    # Run the ZAP Full Scan on example.com
+    docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py \
+    -t https://www.example.com -g gen.conf -r testreport.html
+
 
