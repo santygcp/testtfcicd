@@ -1,18 +1,14 @@
 steps:
-  - name: DAST Scan using OWASP ZAP
-    id: DAST Scan using OWASP ZAP
-    dir: /workspace
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        cd /app/ZAP_2.12.0/
-        ./zap.sh -cmd -quickurl https://ww.example.com -quickprogress -quickout ../zap_report.html
-    image: gcr.io/global-mobility-services/jb-ops/jb4c-pentest:latest
-  - name: copy-report
-    id: Copy report to bucket
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        gsutil cp /workspace/zap_report.html gs://pentest-result/
+- name: "gcr.io/cloud-builders/wget"
+  args: ["https://github.com/zaproxy/zaproxy/releases/latest/download/ZAP_WEEKLY_D-2022-01-17.zip", "-O", "zap.zip"]
+- name: "gcr.io/cloud-builders/unzip"
+  args: ["zap.zip", "-d", "zap"]
+- name: "gcr.io/owasp-zap/zap2docker-stable"
+  entrypoint: "zap-baseline.py"
+  args: [
+    "-t", "http://app.jobbatical.com",
+    "-r", "report.html",
+    "-x", "report.xml"
+  ]
+- name: "gcr.io/cloud-builders/gsutil"
+  args: ["cp", "report.html", "gs://dumduma/reports/report-$(date +%Y%m%d-%H%M%S).html"]
