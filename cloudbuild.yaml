@@ -2,13 +2,13 @@ steps:
 - name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
   id: 'ZAP Scan'
   args:
+  - '-J'
+  - '--output-format'
+  - 'json'
   - '-t'
   - 'https://www.zaproxy.org/'
   - '-r'
   - '.zap/rules.tsv'
   - '-c'
   - '-a'
-  - '-J'
-  - '--output-format'
-  - 'json'
 timeout: 1200s
