@@ -1,6 +1,6 @@
 steps:
 - name: "gcr.io/cloud-builders/wget"
-  args: ["https://github.com/zaproxy/zaproxy/releases/latest/download/ZAP_WEEKLY_D-2022-01-17.zip", "-O", "zap.zip"]
+  args: ["https://github.com/zaproxy/zaproxy/releases/tag/w2023-01-31.zip", "-O", "zap.zip"]
 - name: "gcr.io/cloud-builders/unzip"
   args: ["zap.zip", "-d", "zap"]
 - name: "gcr.io/owasp-zap/zap2docker-stable"
