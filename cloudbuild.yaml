@@ -19,17 +19,27 @@ steps:
   args:
   - '-c'
   - |
-    # Run the ZAP Full Scan on example.com and generate a report
-    docker run -t -v "/path/to/zap-report:/zap/wrk" owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -J report.json -w /zap/wrk/
+    # Run the ZAP Full Scan on example.com and generate a JSON report
+    docker run -t -v "$(pwd)/zap-report:/zap/wrk" owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -J report.json -w /zap/wrk/
 
-    # Convert the JSON report to HTML
-    docker run -v "/path/to/zap-report:/zap/wrk" --rm owasp/zap2docker-stable zap-cli report -f html -o report.html -i /zap/wrk/report.json
+- name: 'docker.io/library/docker:latest'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    # Install zap-cli
+    apt-get update
+    apt-get install -y python3-pip
+    pip3 install --user zapcli
+
+    # Convert the JSON report to HTML using zap-cli
+    zap-cli report -f html -o report.html -i "$(pwd)/zap-report/report.json"
 
 - name: 'gcr.io/cloud-builders/gsutil'
   args:
   - 'cp'
-  - '/path/to/zap-report/report.html'
-  - 'gs://dumduma/report.html'
+  - '$(pwd)/zap-report/report.html'
+  - 'gs://dumdumareport.html'
 artifacts:
   objects:
     location: 'gs://dumduma/report.json'
