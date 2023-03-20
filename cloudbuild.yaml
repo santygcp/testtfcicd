@@ -30,7 +30,7 @@ steps:
   - 'cp'
   - '/path/to/zap-report/report.html'
   - 'gs://dumduma/report.html'
-  artifacts:
+artifacts:
   objects:
     location: 'gs://dumduma/report.json'
     paths: ['zap-report/report.json']
