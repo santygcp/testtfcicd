@@ -1,16 +1,12 @@
 steps:
 - name: "gcr.io/mystic-pagoda-369007/my-zap-image:latest"
-  entrypoint: "zap-baseline.py"
-  args: [
-    "-t", "http://example.com",
-    "-r", "report.html",
-    "-x", "report.xml"
-  ]
-  volumes:
-  - name: "workdir"
-    path: "/zap/wrk"
+  entrypoint: "bash"
+  args:
+  - "-c"
+  - |
+    # Change the ownership of the zap.yaml file
+    chown $(whoami) /builder/home/zap.yaml
+    # Run the ZAP baseline scan
+    zap-baseline.py -t http://example.com -r report.html -x report.xml
 - name: "gcr.io/cloud-builders/gsutil"
   args: ["cp", "report.html", "gs://my-bucket/reports/report-$(date +%Y%m%d-%H%M%S).html"]
-  volumes:
-  - name: "workdir"
-    path: "/zap/wrk"
