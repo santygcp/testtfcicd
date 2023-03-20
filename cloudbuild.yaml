@@ -1,8 +1,4 @@
 steps:
-- name: "gcr.io/cloud-builders/wget"
-  args: ["https://github.com/zaproxy/zaproxy/releases/tag/w2023-01-31.zip", "-O", "zap.zip"]
-- name: "gcr.io/cloud-builders/unzip"
-  args: ["zap.zip", "-d", "zap"]
 - name: "gcr.io/owasp-zap/zap2docker-stable"
   entrypoint: "zap-baseline.py"
   args: [
@@ -11,4 +7,5 @@ steps:
     "-x", "report.xml"
   ]
 - name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "report.html", "gs://dumduma/reports/report-$(date +%Y%m%d-%H%M%S).html"]
+  args: ["cp", "report.html", "gs://pentest-result/reports/report-$(date +%Y%m%d-%H%M%S).html"]
+timeout: "1600s"
