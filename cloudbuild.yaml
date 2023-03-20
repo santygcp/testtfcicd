@@ -14,17 +14,19 @@
 
 
 steps:
-- name: 'docker.io/library/docker:latest'
+- name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args:
   - '-c'
   - |
-    # Install ZAP CLI tool and gsutil
-    apt-get update && apt-get install -y zaproxy python3-pip
-    pip3 install gsutil
-
+    # Pull the latest OWASP ZAP Docker image
+    docker pull owasp/zap2docker-stable
+    
     # Run the ZAP Full Scan on example.com
-    docker run -v $WORKING_DIRECTORY:/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com
+    docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com -r report.html --output /zap/wrk/report.html
+    
+    # Copy the report to a Google Cloud Storage bucket
+    /builder/google-cloud-sdk/bin/gsutil cp /zap/wrk/report.html gs://$_BUCKET_NAME/reports/
 
-    # Copy the ZAP report to GCS
-    gsutil cp $WORKING_DIRECTORY/*.html gs://dumduma/
+substitutions:
+  _BUCKET_NAME: dumduma
