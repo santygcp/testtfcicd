@@ -1,12 +1,12 @@
 steps:
-- name: "gcr.io/mystic-pagoda-369007/my-zap-image:latest"
-  entrypoint: "bash"
+- name: 'docker.io/library/docker:latest'
+  entrypoint: 'bash'
   args:
-  - "-c"
+  - '-c'
   - |
-    # Change the ownership of the zap.yaml file
-    chown $(whoami) /builder/home/zap.yaml
-    # Run the ZAP baseline scan
-    zap-baseline.py -t http://example.com -r report.html -x report.xml
-- name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "report.html", "gs://my-bucket/reports/report-$(date +%Y%m%d-%H%M%S).html"]
+#     # Install Docker Compose
+#     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#     chmod +x /usr/local/bin/docker-compose
+
+    # Run the ZAP Full Scan on example.com
+    docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://www.example.com
