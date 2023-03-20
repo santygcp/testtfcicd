@@ -13,7 +13,7 @@
 #   - '-a'
 # timeout: 1200s
 
-Steps:
+steps:
 - name: "gcr.io/mystic-pagoda-369007/my-zap-image:latest"
   entrypoint: "zap-baseline.py"
   args: [
