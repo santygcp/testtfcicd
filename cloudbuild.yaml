@@ -23,4 +23,4 @@ Steps:
   ]
 - name: "gcr.io/cloud-builders/gsutil"
   args: ["cp", "report.html", "gs://my-bucket/reports/report-$(date +%Y%m%d-%H%M%S).html"]
-  env:
+
