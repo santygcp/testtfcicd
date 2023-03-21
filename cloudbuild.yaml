@@ -5,8 +5,8 @@ steps:
   - '-c'
   - |
     docker run -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py -t https://www.example.com -r testreport.html -I
- artifacts:
-  objects:
-    location: 'gs://dumduma'
-    paths:
-      - zap/wrk/zap_report.html
+#  artifacts:
+#   objects:
+#     location: 'gs://dumduma'
+#     paths:
+#       - zap/wrk/zap_report.html
