@@ -15,9 +15,9 @@
 
 steps:
 - name: owasp/zap2docker-weekly
-args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
-volumes:
+  args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
+  volumes:
 - name: zap-data
-path: /zap/wrk
+  path: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
-args: ["cp", "/workspace/zap-data/report.html", "gs://dumduma/report.html"]
+  args: ["cp", "/workspace/zap-data/report.html", "gs://dumduma/report.html"]
