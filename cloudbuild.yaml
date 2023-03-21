@@ -17,7 +17,14 @@ steps:
 - name: owasp/zap2docker-weekly
   args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
   volumes:
-- name: zap-data
-  path: /zap/wrk
+  - name: zap-data
+    path: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "/workspace/zap-data/report.html", "gs://dumduma/report.html"]
+  args: ["cp", "/workspace/zap-data/report.html", "gs://asecurityguru-bucket/zap-reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
+  env:
+  - 'ZAP_REPORT_BUCKET=dumduma'
+  - 'ZAP_REPORT_FOLDER=zap-reports'
+  - 'ZAP_REPORT_NAME=report_$(date +'%Y-%m-%d_%H-%M-%S').html'
+  volumes:
+  - name: zap-data
+    path: /workspace/zap-data
