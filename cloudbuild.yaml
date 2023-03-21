@@ -4,4 +4,4 @@ steps:
   args:
   - '-c'
   - |
-    zap-full-scan.py -t https://www.example.com -r testreport.html
+    zap-full-scan.py -t https://www.example.com 
