@@ -10,4 +10,4 @@ artifacts:
   objects:
     location: 'gs://dumduma'
     paths:
-      - zap/wrk/zap_report.html
+      - zap/wrk/testreport.html
