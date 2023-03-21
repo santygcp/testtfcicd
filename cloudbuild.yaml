@@ -1,12 +1,22 @@
 steps:
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '.']
-- name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '.']
+- name: 'gcr.io/$PROJECT_ID/my-image'
   entrypoint: 'bash'
   args:
   - '-c'
   - |
     docker run -v $HOME/.ZAP_D/cache/:/root/.ZAP_D/cache/ owasp/zap2docker-stable zap-full-scan.py \
       -t https://www.example.com -g gen.conf -r testreport.html
-- name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', 'testreport.html', 'gs://my-bucket/reports/']
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    gsutil cp testreport.html gs://my-bucket/reports/
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
+  volumes:
+  - name: 'google-cloud-sdk'
+    path: '/root/.config'
