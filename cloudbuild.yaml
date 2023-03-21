@@ -10,5 +10,5 @@ steps:
 
     # Run the ZAP Full Scan on example.com
     mkdir zap
-    docker run -t owasp/zap2docker-stable zap-full-scan.py -t https://example.com -r testreport.html  -I
-    cp testreport.html /zap/
+    docker run -v $(pwd):/zap/:rw -t owasp/zap2docker-stable zap-full-scan.py \
+    -t https://www.example.com -g gen.conf -r testreport.html
