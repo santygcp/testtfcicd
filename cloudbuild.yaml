@@ -1,5 +1,5 @@
 steps:
-- name: 'docker.io/library/docker:latest'
+- name: 'gcr.io/mystic-pagoda-369007/my-zap-image'
   entrypoint: 'sh'
   args:
   - '-c'
