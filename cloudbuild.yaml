@@ -21,4 +21,7 @@ steps:
     path: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
   args: ["cp", "/workspace/zap-data/report.html", "gs://dumduma/zap-reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
- 
+  volumes:
+  - name: zap-data
+    path: /workspace/zap-data
+
