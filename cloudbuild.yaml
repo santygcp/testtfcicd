@@ -15,16 +15,18 @@
 steps:
 - name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
   args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
-  volumes:
+  volumeMounts:
   - name: zap-data
-    path: /zap/wrk
+    mountPath: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
   args: ["cp", "/workspace/zap-data/report.html", "gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
-  volumes:
+  volumeMounts:
   - name: zap-data
-    path: /zap/wrk
-volumes:
+    mountPath: /zap/wrk
+
+volumeMounts:
 - name: zap-data
   gcePersistentDisk:
     pdName: zap-data
     fsType: ext4
+
