@@ -12,14 +12,15 @@
 #     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py \
 #     -t https://www.example.com -g gen.conf -r testreport.html
 
-
+steps:
 - name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
   args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
   volumes:
   - name: zap-data
     path: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "/workspace/zap-data/report.html",, "gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
+  args: ["cp", "/workspace/zap-data/report.html", "gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
   volumes:
   - name: zap-data
     path: /zap/wrk
+
