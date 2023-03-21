@@ -23,11 +23,8 @@ steps:
   volumes:
   - name: zap-data
     path: /zap/wrk
-
 volumes:
 - name: zap-data
   gcePersistentDisk:
     pdName: zap-data
     fsType: ext4
-
-
