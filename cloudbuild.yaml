@@ -5,7 +5,7 @@ steps:
   - '-c'
   - |
     docker run -v $(pwd):/zap/wrk/:rw --user root -t gcr.io/mystic-pagoda-369007/my-zap-image sh -c "mkdir -p /zap/wrk && zap-full-scan.py -t https://www.example.com -I -r /zap/wrk/testreport.html"
-  artifacts:
+ artifacts:
     objects:
       location: 'gs://dumduma'
       paths:
