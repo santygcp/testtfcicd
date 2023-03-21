@@ -9,4 +9,9 @@ steps:
     # chmod +x /usr/local/bin/docker-compose
     # Run the ZAP Full Scan on example.com
     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py \
-    -t https://www.example.com -g gen.conf -r testreport.html -I
+    -t https://www.example.com -g gen.conf -r testreport.html 
+artifacts:
+  objects:
+    location: 'gs://dumduma'
+    paths:
+      - testreport.html
