@@ -4,9 +4,7 @@ steps:
   args:
   - '-c'
   - |
-#     docker run -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py -t https://www.example.com -r testreport.html -I
-    docker run -v $(pwd):/zap/wrk/:rw -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py \
-    -t https://www.example.com -g gen.conf -r testreport.html
+    docker run -v $(pwd):/zap/wrk/:rw -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py -t https://www.example.com -g gen.conf -r testreport.html
 #  artifacts:
 #   objects:
 #     location: 'gs://dumduma'
