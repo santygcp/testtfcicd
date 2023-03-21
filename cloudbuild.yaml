@@ -4,11 +4,4 @@ steps:
   args:
   - '-c'
   - |
-    mkdir /zap/wrk
-#     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -I \
-#     -t https://www.example.com -g gen.conf -r testreport.html -I
-# artifacts:
-#   objects:
-#     location: 'gs://dumduma'
-#     paths:
-#       - testreport.html
+    zap-full-scan.py -t https://www.example.com -r testreport.html
