@@ -4,4 +4,4 @@ steps:
   args:
   - '-c'
   - |
-    zap-full-scan.py -t https://www.example.com 
+    docker run -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py -t https://www.example.com
