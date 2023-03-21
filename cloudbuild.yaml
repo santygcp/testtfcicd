@@ -12,5 +12,5 @@ steps:
   - "-c"
   - |
     report_date=$(date +%Y%m%d-%H%M%S)
-    gsutil cp testreport.html gs://pentest-result/reports/report-$report_date.html
+    gsutil cp testreport.html gs://dumduma/reports/report-$report_date.html
   
