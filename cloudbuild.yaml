@@ -14,13 +14,17 @@
 
 steps:
 - name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
-  args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
+  entrypoint: "zap-baseline.py"
+  args: ["-t", "http://example.com", "-r", "/zap/wrk/report.html"]
   volumes:
   - name: zap-data
     path: /zap/wrk
 - name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "/workspace/zap-data/report.html", "gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"]
+  entrypoint: "sh"
+  args:
+  - "-c"
+  - "gsutil cp /workspace/zap-data/report.html gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html"
   volumes:
   - name: zap-data
-    path: /zap/wrk
+    path: /workspace/zap-data
 
