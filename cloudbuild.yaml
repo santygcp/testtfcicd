@@ -1,14 +1,23 @@
 steps:
-- name: 'docker.io/library/docker:latest'
-  entrypoint: 'sh'
-  args:
-  - '-c'
-  - |
-    # Install Docker Compose
-    # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    # chmod +x /usr/local/bin/docker-compose
-
-    # Run the ZAP Full Scan on example.com
-    mkdir zap
-    docker run -v $(pwd):/zap/:rw -t owasp/zap2docker-stable zap-full-scan.py \
-    -t https://www.example.com -g gen.conf -r testreport.html
+#   - name: 'gcr.io/cloud-builders/docker'
+#     args: ['build', '-t', 'gcr.io/$/my-image', '.']
+  - name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
+    args:
+      - 'zap-full-scan.py'
+      - '-t'
+      - 'https://www.example.com'
+      - '-g'
+      - 'gen.conf'
+      - '-r'
+      - 'testreport.html'
+    volumes:
+      - name: 'cloud-storage'
+        path: '/root/.ZAP_D/cache/'
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'testreport.html', 'gs://dumduma/reports/']
+    volumes:
+      - name: 'cloud-storage'
+        path: '/root/.config/'
+volumes:
+  - name: 'cloud-storage'
+    path: '/root/.config/gcloud'
