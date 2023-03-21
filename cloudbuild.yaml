@@ -12,30 +12,42 @@
 #     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py \
 #     -t https://www.example.com -g gen.conf -r testreport.html
 
-steps:
-- name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - |
-    zap-baseline.py -t http://example.com -r /zap/wrk/report.html
-  volumes:
-  - name: zap-data
-    mountPath: /zap/wrk
-- name: "gcr.io/cloud-builders/gsutil"
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - |
-    gsutil cp /workspace/zap-data/report.html gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html
-  volumes:
-  - name: zap-data
-    mountPath: /workspace/zap-data
+# steps:
+# - name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
+#   entrypoint: /bin/sh
+#   args:
+#   - -c
+#   - |
+#     zap-baseline.py -t http://example.com -r /zap/wrk/report.html
+#   volumes:
+#   - name: zap-data
+#     mountPath: /zap/wrk
+# - name: "gcr.io/cloud-builders/gsutil"
+#   entrypoint: /bin/sh
+#   args:
+#   - -c
+#   - |
+#     gsutil cp /workspace/zap-data/report.html gs://my-bucket/zap/reports/report_$(date +'%Y-%m-%d_%H-%M-%S').html
+#   volumes:
+#   - name: zap-data
+#     mountPath: /workspace/zap-data
 
-options:
+# options:
+#   volumes:
+#     - name: zap-data
+#       path: /mnt/disks/zap-data
+#       fsType: ext4
+
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'my-image', '.']
   volumes:
-    - name: zap-data
-      path: /mnt/disks/zap-data
-      fsType: ext4
+  - name: 'my-volume'
+    path: '/my/path'
+  volumeMounts:
+  - name: 'my-volume'
+    mountPath: '/mnt/my-path'
+
 
 
