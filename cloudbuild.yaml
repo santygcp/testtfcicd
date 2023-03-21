@@ -13,9 +13,7 @@
 #     -t https://www.example.com -g gen.conf -r testreport.html
 
 
-steps:
 - name: gcr.io/mystic-pagoda-369007/my-zap-image:latest
-  user: "<non-root-user>"
   args: ["zap-baseline.py", "-t", "http://example.com", "-r", "/zap/wrk/report.html"]
   volumes:
   - name: zap-data
