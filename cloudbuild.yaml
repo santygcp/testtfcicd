@@ -1,5 +1,5 @@
 steps:
-- name: 'gcr.io/mystic-pagoda-369007/my-zap-image'
+- name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'sh'
   args:
   - '-c'
