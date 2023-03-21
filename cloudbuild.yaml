@@ -7,4 +7,10 @@ steps:
     docker run -v $(pwd):/zap/wrk/:rw --user root -t gcr.io/mystic-pagoda-369007/my-zap-image zap-full-scan.py \
     -t https://www.example.com -I  -r testreport.html
 - name: "gcr.io/cloud-builders/gsutil"
-  args: ["cp", "testreport.html", "gs://dumduma/reports/report"]
+  entrypoint: "bash"
+  args:
+  - "-c"
+  - |
+    report_date=$(date +%Y%m%d-%H%M%S)
+    gsutil cp testreport.html gs://pentest-result/reports/report-$report_date.html
+  
