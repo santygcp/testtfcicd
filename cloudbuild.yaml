@@ -1,23 +1,12 @@
 steps:
-#   - name: 'gcr.io/cloud-builders/docker'
-#     args: ['build', '-t', 'gcr.io/$/my-image', '.']
-  - name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
-    args:
-      - 'zap-full-scan.py'
-      - '-t'
-      - 'https://www.example.com'
-      - '-g'
-      - 'gen.conf'
-      - '-r'
-      - 'testreport.html'
-    volumes:
-      - name: 'cloud-storage'
-        path: '/root/.ZAP_D/cache/'
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'testreport.html', 'gs://dumduma/reports/']
-    volumes:
-      - name: 'cloud-storage'
-        path: '/root/.config/'
-volumes:
-  - name: 'cloud-storage'
-    path: '/root/.config/gcloud'
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '.']
+- name: 'gcr.io/mystic-pagoda-369007/my-zap-image:latest'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker run -v $HOME/.ZAP_D/cache/:/root/.ZAP_D/cache/ owasp/zap2docker-stable zap-full-scan.py \
+      -t https://www.example.com -g gen.conf -r testreport.html
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', 'testreport.html', 'gs://my-bucket/reports/']
